@@ -49,7 +49,7 @@ const AdminDashboard = () => {
           <div className="col-md-4 text-md-end mt-3 mt-md-0">
             <div className="d-inline-flex flex-column align-items-md-end text-light">
               <span className="badge bg-success-subtle text-success border border-success px-3 py-1 mb-1">
-                <FaCheckCircle className="me-1" /> Core Engine Online
+                <FaCheckCircle className="me-1" /> Core Engine Online &bull; Verified
               </span>
               <small className="text-secondary">Uptime: 99.98% &bull; Latency: 12ms &bull; Encryption: AES-256 Active</small>
             </div>
