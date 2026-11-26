@@ -61,7 +61,7 @@ const SettingsPage = () => {
     <div className="d-flex flex-column gap-4 max-w-1000 mx-auto">
       {/* Header */}
       <div>
-        <h3 className="fw-bold text-dark mb-1">Settings & Security</h3>
+        <h3 className="fw-bold text-dark mb-1">Vault Preferences & Security Settings</h3>
         <p className="text-muted small mb-0">
           Manage your account credentials, proactive reminder schedules, and privacy controls.
         </p>
