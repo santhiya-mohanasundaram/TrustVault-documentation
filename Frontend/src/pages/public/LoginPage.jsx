@@ -204,7 +204,7 @@ const LoginPage = () => {
                       <input
                         type={showPassword ? 'text' : 'password'}
                         className="form-control border-start-0 border-end-0"
-                        placeholder="Enter your password"
+                        placeholder="Enter your password" aria-label="Account Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
