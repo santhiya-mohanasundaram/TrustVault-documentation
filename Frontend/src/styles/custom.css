@@ -543,6 +543,14 @@ h1, h2, h3, h4, h5, h6 {
   border-color: #99f6e4;
 }
 
+/* Elevated Interactive States */
+.btn-emerald:active { transform: translateY(1px); }
+.btn-teal:active { transform: translateY(1px); }
+
+/* High Contrast Accessibility Support */
+@media (prefers-contrast: more) {
+  .tv-card { border: 2px solid #000; }
+}
 /* Responsive Mobile Touch Enhancements */
 @media (max-width: 576px) {
   .btn { min-height: 44px; }
