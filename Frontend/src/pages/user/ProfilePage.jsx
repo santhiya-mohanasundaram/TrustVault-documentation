@@ -96,7 +96,7 @@ const ProfilePage = () => {
             <p className="text-muted small mb-3">{formData.email}</p>
 
             <span className="badge bg-teal-subtle text-teal px-3 py-1 rounded-pill small fw-semibold">
-              Verified Vault Owner
+              Verified Vault Owner &bull; 2FA Protected
             </span>
 
             {/* Quick avatar selection if editing */}
