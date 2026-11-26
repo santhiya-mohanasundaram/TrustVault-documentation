@@ -166,7 +166,7 @@ const MyDocuments = () => {
               onChange={(e) => setStatusFilter(e.target.value)}
               aria-label="Filter by expiry status"
             >
-              <option value="All">All Statuses</option>
+              <option value="All">All Expiry Statuses</option>
               <option value="Active">Active</option>
               <option value="Expiring Soon">Expiring Soon</option>
               <option value="Expired">Expired</option>
