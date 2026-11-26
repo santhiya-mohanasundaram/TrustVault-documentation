@@ -95,7 +95,7 @@ const DocumentModal = ({ document, isOpen, onClose, mode = 'view', onSwitchToEdi
                 {document.fileType === 'PDF' ? <FaFilePdf size={18} /> : <FaFileImage size={18} />}
               </div>
               <div>
-                <h5 className="modal-title fw-bold text-dark mb-0">
+                <h5 className="modal-title fw-bold text-dark mb-0" title="Click to view details">
                   {mode === 'edit' ? 'Edit Document Details' : document.name}
                 </h5>
                 <small className="text-muted">ID: {document.id} &bull; Type: {document.fileType || 'PDF'}</small>
