@@ -186,7 +186,7 @@ const LoginPage = () => {
                       <input
                         type="email"
                         className="form-control border-start-0"
-                        placeholder="e.g. name@example.com"
+                        placeholder="e.g. name@example.com" autoCapitalize="none"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
