@@ -242,7 +242,7 @@ const UploadDocument = () => {
                 Browse Files
               </button>
               <div className="mt-3 text-muted small">
-                Supported formats: <strong>PDF, JPG, JPEG, PNG</strong> (Max: 25 MB)
+                Supported formats: <strong>PDF, JPG, JPEG, PNG</strong> &bull; Max: 25 MB per file
               </div>
             </div>
 
