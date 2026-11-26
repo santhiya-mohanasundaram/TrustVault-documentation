@@ -95,7 +95,7 @@ const DocumentModal = ({ document, isOpen, onClose, mode = 'view', onSwitchToEdi
                 {document.fileType === 'PDF' ? <FaFilePdf size={18} /> : <FaFileImage size={18} />}
               </div>
               <div>
-                <h5 className="modal-title fw-bold text-dark mb-0">
+                <h5 className="modal-title fw-bold text-dark mb-0" title="Click to view details">
                   {mode === 'edit' ? 'Edit Document Details' : document.name}
                 </h5>
                 <small className="text-muted">ID: {document.id} &bull; Type: {document.fileType || 'PDF'}</small>
@@ -167,7 +167,7 @@ const DocumentModal = ({ document, isOpen, onClose, mode = 'view', onSwitchToEdi
                       <FaCalendarAlt className="me-1" /> Uploaded on: {document.uploadDate}
                     </span>
                     <span className="d-flex align-items-center gap-1 text-teal fw-semibold">
-                      <FaLock size={12} /> Encrypted & Verified
+                      <FaLock size={12} /> Encrypted & Verified QR Seal
                     </span>
                   </div>
                 </div>
