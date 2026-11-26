@@ -22,7 +22,7 @@ export const StatusDonutChart = ({ active = 6, expiring = 2, expired = 1, size =
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
       <div className="position-relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)', transition: 'transform 0.3s ease' }}>
           {/* Background Ring */}
           <circle
             cx={size / 2}
