@@ -134,7 +134,7 @@ const MyDocuments = () => {
               <input
                 type="text"
                 className="form-control border-start-0"
-                placeholder="Search by name, number, keywords..."
+                placeholder="Search documents by name, number, keywords..." aria-label="Search documents"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
