@@ -90,7 +90,7 @@ const AdminUserManagement = () => {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="All">All Account Statuses</option>
+              <option value="All">All Tenant Statuses</option>
               <option value="Active">Active Accounts</option>
               <option value="Suspended">Suspended Accounts</option>
             </select>
