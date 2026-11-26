@@ -110,7 +110,7 @@ const AdminCategoryManagement = () => {
       {/* Header */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">Document Category Master</h3>
+          <h3 className="fw-bold text-dark mb-1">System Document Category Master</h3>
           <p className="text-muted small mb-0">
             Define, customize, and govern legal document classification rules and folder structures.
           </p>
