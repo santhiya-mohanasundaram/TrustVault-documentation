@@ -124,7 +124,7 @@ export const MonthlyUploadBarChart = ({ data = [
                   height: `${Math.max(barHeight, 8)}px`,
                   backgroundColor: idx === data.length - 1 ? '#0f766e' : '#a7f3d0',
                   borderRadius: '6px 6px 0 0',
-                  transition: 'height 0.4s ease'
+                  transition: 'height 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
                 title={`${item.month}: ${item.uploads} documents`}
               ></div>
