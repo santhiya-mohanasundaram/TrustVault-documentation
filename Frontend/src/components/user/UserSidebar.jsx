@@ -93,7 +93,7 @@ const UserSidebar = ({ isOpen, onClose }) => {
         <div className="flex-grow-1 py-3 overflow-y-auto">
           <div className="px-3 mb-2">
             <span className="text-muted text-uppercase fw-bold" style={{ fontSize: '0.78rem', letterSpacing: '0.06em' }}>
-              User Workspace
+              User Vault Workspace
             </span>
           </div>
 
