@@ -49,14 +49,14 @@ const CategoriesPage = () => {
       {/* Header */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">Document Categories</h3>
+          <h3 className="fw-bold text-dark mb-1">Document Categories & Classifications</h3>
           <p className="text-muted small mb-0">
             Browse and organize your files by standardized legal, personal, and financial classifications.
           </p>
         </div>
         <div>
           <span className="badge bg-light text-secondary border px-3 py-2 rounded-pill small">
-            {categories.length} Registered Categories &bull; {documents.length} Total Documents
+            {categories.length} Active Registered Categories &bull; {documents.length} Total Documents
           </span>
         </div>
       </div>

@@ -212,6 +212,38 @@ export const AppProvider = ({ children }) => {
       if (res && res.success) {
         showToast(`Account created for ${res.data.name}! Please log in.`, 'success');
         return { success: true, user: res.data };
+  const register = (formData) => {
+    const cleanEmail = formData.email.trim().toLowerCase();
+    const cleanName = formData.fullName.trim();
+
+    // Check for duplicate registration
+    const existing = users.find(
+      (u) => u.email && u.email.toLowerCase() === cleanEmail
+    );
+    if (existing) {
+      showToast(`An account with email "${cleanEmail}" is already registered. Please login.`, 'warning');
+      return { success: false, error: 'User already exists' };
+    }
+
+    const newUserId = `USR-${Math.floor(100 + Math.random() * 900)}`;
+    const newUser = {
+      id: newUserId,
+      name: cleanName,
+      email: cleanEmail,
+      phone: formData.phone.trim(),
+      password: formData.password, // Saved for demo authentication
+      role: 'User',
+      status: 'Active',
+      registrationDate: new Date().toISOString().split('T')[0],
+      documentsCount: 0,
+      storageUsed: '0 MB',
+      lastLogin: 'Never',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
+      notificationPreferences: {
+        email: true,
+        sms: false,
+        push: true,
+        expiryThreshold: '30', autoReminderEnabled: true
       }
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Registration failed.';
@@ -237,6 +269,27 @@ export const AppProvider = ({ children }) => {
   const addDocument = async (newDoc) => {
     try {
       const formData = new FormData();
+  const addDocument = (newDoc) => {
+    // Check for potential duplicate document names
+    const isDuplicate = allDocuments.some(d => d.userId === (currentUser?.id || "USR-101") && d.name.toLowerCase() === newDoc.name.toLowerCase());
+    const ownerId = currentUser?.id || 'USR-101';
+    const ownerName = currentUser?.name || 'User';
+
+    const docWithId = {
+      ...newDoc,
+      id: `doc-${Date.now()}`,
+      userId: ownerId,
+      uploadDate: new Date().toISOString().split('T')[0],
+      lastModified: new Date().toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+
+    setAllDocuments((prev) => [docWithId, ...prev]);
 
       if (newDoc.rawFile) {
         formData.append('file', newDoc.rawFile);

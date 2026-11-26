@@ -54,7 +54,7 @@ const AdminActivityMonitoring = () => {
     <div className="d-flex flex-column gap-4">
       {/* Header */}
       <div>
-        <h3 className="fw-bold text-dark mb-1">System Security & Activity Monitoring</h3>
+        <h3 className="fw-bold text-dark mb-1">System Security Audit & Real-Time Activity Monitoring</h3>
         <p className="text-muted small mb-0">
           Immutable system-level audit logs for authentication events, uploads, and governance operations.
         </p>
@@ -84,7 +84,7 @@ const AdminActivityMonitoring = () => {
               value={eventFilter}
               onChange={(e) => setEventFilter(e.target.value)}
             >
-              <option value="All">All Event Types</option>
+              <option value="All">All Monitored Event Types</option>
               <option value="User Registration">User Registration</option>
               <option value="User Login">Login Activity</option>
               <option value="Document Upload">Document Upload Activity</option>
