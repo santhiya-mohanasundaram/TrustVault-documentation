@@ -111,7 +111,7 @@ const DocumentHistory = () => {
               value={activityTypeFilter}
               onChange={(e) => setActivityTypeFilter(e.target.value)}
             >
-              <option value="All">All Activity Types</option>
+              <option value="All">All Document Operations</option>
               <option value="Document Uploaded">Document Uploaded</option>
               <option value="Document Downloaded">Document Downloaded</option>
               <option value="Document Updated">Document Updated</option>
