@@ -26,7 +26,7 @@ const AdminDocumentStats = () => {
     <div className="d-flex flex-column gap-4">
       {/* Header */}
       <div>
-        <h3 className="fw-bold text-dark mb-1">Document Statistics & Analytics</h3>
+        <h3 className="fw-bold text-dark mb-1">Enterprise Document Statistics & Analytics</h3>
         <p className="text-muted small mb-0">
           Aggregated platform volume, category classification, and document lifecycle metrics.
         </p>
