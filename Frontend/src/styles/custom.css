@@ -548,3 +548,6 @@ h1, h2, h3, h4, h5, h6 {
   .btn { min-height: 44px; }
   .form-control { min-height: 44px; }
 }
+
+/* Responsive Table Scroll Shadows */
+.table-responsive { -webkit-overflow-scrolling: touch; }
