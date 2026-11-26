@@ -542,3 +542,12 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--tv-shadow);
   border-color: #99f6e4;
 }
+
+/* Responsive Mobile Touch Enhancements */
+@media (max-width: 576px) {
+  .btn { min-height: 44px; }
+  .form-control { min-height: 44px; }
+}
+
+/* Responsive Table Scroll Shadows */
+.table-responsive { -webkit-overflow-scrolling: touch; }
