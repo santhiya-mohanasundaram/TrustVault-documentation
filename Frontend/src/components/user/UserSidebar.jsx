@@ -139,7 +139,7 @@ const UserSidebar = ({ isOpen, onClose }) => {
             <button
               onClick={handleLogout}
               className="btn btn-sm btn-outline-danger p-2 rounded-3"
-              title="Logout"
+              title="Logout (Alt+L)"
               aria-label="Logout"
             >
               <FaSignOutAlt />
