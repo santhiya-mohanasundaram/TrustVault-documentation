@@ -1,0 +1,23 @@
+# Environment and secret keys
+.env
+.env.*
+!.env.example
+application-local.properties
+
+# Build and compiled classes
+target/
+*.class
+
+# Logs
+*.log
+logs/
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Uploaded document storage
+uploads/
