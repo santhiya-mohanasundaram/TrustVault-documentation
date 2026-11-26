@@ -309,7 +309,7 @@ const DocumentModal = ({ document, isOpen, onClose, mode = 'view', onSwitchToEdi
                   className="btn btn-emerald d-flex align-items-center gap-2"
                   onClick={handleDownload}
                 >
-                  <FaDownload /> Download File
+                  <FaDownload /> Download Verified File
                 </button>
               </div>
             </div>
