@@ -8,6 +8,15 @@ Frontend/dist/
 dist-ssr/
 Frontend/dist-ssr/
 
+# Java & Maven
+target/
+Backend/target/
+*.class
+
+# Uploaded Files
+Backend/uploads/
+uploads/
+
 # Environment files & secret keys (Never push passwords or secrets)
 .env
 .env.local

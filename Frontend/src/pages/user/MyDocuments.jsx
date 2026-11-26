@@ -23,6 +23,7 @@ import {
 import DocumentModal from '../../components/common/DocumentModal';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import { useApp } from '../../context/AppContext';
+import { documentApi } from '../../services/api';
 
 const MyDocuments = () => {
   const { documents, categories, deleteDocument, showToast, logActivity } = useApp();
@@ -90,6 +91,11 @@ const MyDocuments = () => {
     logActivity('Document Downloaded', doc.name, doc.category, 'Success');
     showToast(`Downloading verified file: ${doc.name}`, 'success');
 
+    if (doc.id && typeof doc.id === 'number') {
+      documentApi.downloadFile(doc.id, doc.fileName || `${doc.name}.pdf`);
+      return;
+    }
+
     const element = window.document.createElement('a');
     const file = new Blob([`TrustVault Demo Document\nName: ${doc.name}\nCategory: ${doc.category}\nNumber: ${doc.documentNumber || 'N/A'}\nStatus: ${doc.status}\nValid: ${doc.expiryDate || 'No Expiry'}`], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
@@ -111,8 +117,9 @@ const MyDocuments = () => {
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
           <h3 className="fw-bold text-dark mb-1">My Documents Repository</h3>
-          <p className="text-muted small mb-0">
-            Securely stored, organized, and categorized personal records ({filteredDocs.length} displayed)
+          <p className="text-muted small mb-0 d-flex align-items-center gap-2">
+            <span>Client-side encrypted & organized personal records ({filteredDocs.length} displayed)</span>
+            <span className="badge bg-success-subtle text-success border border-success-subtle small py-1 px-2">AES-256 GCM</span>
           </p>
         </div>
         <div className="d-flex align-items-center gap-2">
