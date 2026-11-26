@@ -313,7 +313,7 @@ const UploadDocument = () => {
             {/* Client-Side Encryption Guarantee */}
             <div className="mt-auto pt-4 border-top mt-4">
               <div className="d-flex align-items-center gap-2 text-teal small fw-semibold">
-                <FaLock /> Zero-Knowledge Client Tokenization Guaranteed
+                <FaLock /> Zero-Knowledge Client Tokenization & Anti-Malware Integrity Check
               </div>
             </div>
           </div>
