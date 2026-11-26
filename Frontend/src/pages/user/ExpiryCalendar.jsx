@@ -92,7 +92,7 @@ const ExpiryCalendar = () => {
       {/* Header */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">Document Expiry Calendar</h3>
+          <h3 className="fw-bold text-dark mb-1">Document Expiry & Renewal Calendar</h3>
           <p className="text-muted small mb-0">
             Track certificate renewals, policy deadlines, and identity card expiration milestones.
           </p>
@@ -124,7 +124,7 @@ const ExpiryCalendar = () => {
                   {monthNames[month]} {year}
                 </h4>
                 <button onClick={setToday} className="btn btn-sm btn-outline-teal ms-2">
-                  Today (Nov 2026)
+                  Jump to Current Month
                 </button>
               </div>
               <div className="btn-group">

@@ -110,7 +110,7 @@ const MyDocuments = () => {
       {/* Header Bar */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">My Documents Repository</h3>
+          <h3 className="fw-bold text-dark mb-1">My Documents Repository & Vault</h3>
           <p className="text-muted small mb-0">
             Securely stored, organized, and categorized personal records ({filteredDocs.length} displayed)
           </p>
@@ -134,7 +134,7 @@ const MyDocuments = () => {
               <input
                 type="text"
                 className="form-control border-start-0"
-                placeholder="Search by name, number, keywords..."
+                placeholder="Search documents by name, number, keywords..." aria-label="Search documents"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -166,7 +166,7 @@ const MyDocuments = () => {
               onChange={(e) => setStatusFilter(e.target.value)}
               aria-label="Filter by expiry status"
             >
-              <option value="All">All Statuses</option>
+              <option value="All">All Expiry Statuses</option>
               <option value="Active">Active</option>
               <option value="Expiring Soon">Expiring Soon</option>
               <option value="Expired">Expired</option>
@@ -232,7 +232,7 @@ const MyDocuments = () => {
                 setStatusFilter('All');
               }}
             >
-              Clear All Filters
+              Reset All Active Filters
             </button>
             <Link to="/user/upload" className="btn btn-emerald btn-sm">
               Upload Document
