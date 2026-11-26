@@ -84,7 +84,7 @@ const AdminActivityMonitoring = () => {
               value={eventFilter}
               onChange={(e) => setEventFilter(e.target.value)}
             >
-              <option value="All">All Event Types</option>
+              <option value="All">All Monitored Event Types</option>
               <option value="User Registration">User Registration</option>
               <option value="User Login">Login Activity</option>
               <option value="Document Upload">Document Upload Activity</option>
