@@ -30,6 +30,7 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [agreeTerms, setAgreeTerms] = useState(true);
 
   // Password Strength Calculation
   const calculatePasswordStrength = (pwd) => {
@@ -266,6 +267,18 @@ const RegisterPage = () => {
                     )}
                   </div>
 
+                  <div className="form-check mb-3">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="termsCheck"
+                      checked={agreeTerms}
+                      onChange={(e) => setAgreeTerms(e.target.checked)}
+                    />
+                    <label className="form-check-label small text-muted" htmlFor="termsCheck">
+                      I agree to the <span className="text-teal fw-semibold">Terms of Service</span> & Privacy Policy
+                    </label>
+                  </div>
                   {/* Submit Button */}
                   <button type="submit" className="btn btn-emerald w-100 py-2 fs-6 shadow-sm mb-3">
                     <FaUserPlus className="me-2" /> Register Account
