@@ -56,7 +56,7 @@ const CategoriesPage = () => {
         </div>
         <div>
           <span className="badge bg-light text-secondary border px-3 py-2 rounded-pill small">
-            {categories.length} Registered Categories &bull; {documents.length} Total Documents
+            {categories.length} Active Registered Categories &bull; {documents.length} Total Documents
           </span>
         </div>
       </div>
