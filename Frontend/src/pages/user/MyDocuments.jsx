@@ -23,6 +23,7 @@ import {
 import DocumentModal from '../../components/common/DocumentModal';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import { useApp } from '../../context/AppContext';
+import { documentApi } from '../../services/api';
 
 const MyDocuments = () => {
   const { documents, categories, deleteDocument, showToast, logActivity } = useApp();
@@ -89,6 +90,11 @@ const MyDocuments = () => {
   const handleDownload = (doc) => {
     logActivity('Document Downloaded', doc.name, doc.category, 'Success');
     showToast(`Downloading verified file: ${doc.name}`, 'success');
+
+    if (doc.id && typeof doc.id === 'number') {
+      documentApi.downloadFile(doc.id, doc.fileName || `${doc.name}.pdf`);
+      return;
+    }
 
     const element = window.document.createElement('a');
     const file = new Blob([`TrustVault Demo Document\nName: ${doc.name}\nCategory: ${doc.category}\nNumber: ${doc.documentNumber || 'N/A'}\nStatus: ${doc.status}\nValid: ${doc.expiryDate || 'No Expiry'}`], { type: 'text/plain' });

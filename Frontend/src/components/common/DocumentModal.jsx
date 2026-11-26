@@ -14,6 +14,7 @@ import {
   FaLock
 } from 'react-icons/fa';
 import { useApp } from '../../context/AppContext';
+import { documentApi } from '../../services/api';
 
 const DocumentModal = ({ document, isOpen, onClose, mode = 'view', onSwitchToEdit }) => {
   const { updateDocument, categories, showToast, logActivity } = useApp();
@@ -46,7 +47,13 @@ const DocumentModal = ({ document, isOpen, onClose, mode = 'view', onSwitchToEdi
 
   const handleDownload = () => {
     logActivity('Document Downloaded', document.name, document.category, 'Success');
-    showToast(`Downloading "${document.name}" (Demo file verified)`, 'success');
+    showToast(`Downloading "${document.name}"`, 'success');
+
+    if (document.id && typeof document.id === 'number') {
+      documentApi.downloadFile(document.id, document.fileName || `${document.name}.pdf`);
+      return;
+    }
+
     // Simulated trigger
     const element = window.document.createElement('a');
     const file = new Blob([`TrustVault Demo Document\nName: ${document.name}\nCategory: ${document.category}\nDocument No: ${document.documentNumber || 'N/A'}\nStatus: ${document.status}`], { type: 'text/plain' });
