@@ -167,7 +167,7 @@ const DocumentModal = ({ document, isOpen, onClose, mode = 'view', onSwitchToEdi
                       <FaCalendarAlt className="me-1" /> Uploaded on: {document.uploadDate}
                     </span>
                     <span className="d-flex align-items-center gap-1 text-teal fw-semibold">
-                      <FaLock size={12} /> Encrypted & Verified
+                      <FaLock size={12} /> Encrypted & Verified QR Seal
                     </span>
                   </div>
                 </div>
