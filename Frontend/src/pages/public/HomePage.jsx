@@ -82,8 +82,8 @@ const HomePage = () => {
           <div className="row align-items-center g-5">
             {/* Left Column: Heading & CTAs */}
             <div className="col-lg-6">
-              <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-emerald-light border border-emerald text-emerald-hover fw-bold small mb-3">
-                <FaShieldAlt /> Next-Gen Personal Document Vault
+              <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-emerald-light border border-emerald text-emerald-hover fw-bold small mb-3 shadow-xs">
+                <FaShieldAlt className="animate-pulse" /> Next-Gen Personal Document Vault &bull; Verified Client-Side
               </div>
               <h1 className="display-4 fw-extrabold text-dark mb-3" style={{ letterSpacing: '-0.03em', lineHeight: 1.15 }}>
                 Your Documents, <br />
