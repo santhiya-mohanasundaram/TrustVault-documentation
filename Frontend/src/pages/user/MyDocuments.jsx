@@ -232,7 +232,7 @@ const MyDocuments = () => {
                 setStatusFilter('All');
               }}
             >
-              Clear All Filters
+              Reset All Active Filters
             </button>
             <Link to="/user/upload" className="btn btn-emerald btn-sm">
               Upload Document
