@@ -96,7 +96,7 @@ const ProfilePage = () => {
             <p className="text-muted small mb-3">{formData.email}</p>
 
             <span className="badge bg-teal-subtle text-teal px-3 py-1 rounded-pill small fw-semibold">
-              Verified Vault Owner
+              Verified Vault Owner &bull; 2FA Protected
             </span>
 
             {/* Quick avatar selection if editing */}
@@ -128,7 +128,7 @@ const ProfilePage = () => {
                 <strong className="text-dark">{documents.length}</strong>
               </div>
               <div className="d-flex justify-content-between">
-                <span>Account Created:</span>
+                <span>Registered On:</span>
                 <strong className="text-dark">{currentUser?.registrationDate || new Date().toISOString().split('T')[0]}</strong>
               </div>
             </div>

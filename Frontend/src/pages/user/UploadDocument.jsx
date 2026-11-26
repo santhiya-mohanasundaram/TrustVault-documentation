@@ -225,7 +225,7 @@ const UploadDocument = () => {
               <div className="upload-icon-circle">
                 <FaCloudUploadAlt />
               </div>
-              <h5 className="fw-bold text-dark mb-2">Drag and drop your files here</h5>
+              <h5 className="fw-bold text-dark mb-2">Drag & drop your files securely here</h5>
               <div className="d-flex align-items-center justify-content-center gap-3 my-3">
                 <span className="border-bottom flex-grow-1" style={{ maxWidth: 80 }}></span>
                 <span className="text-muted small fw-bold">OR</span>
@@ -242,7 +242,7 @@ const UploadDocument = () => {
                 Browse Files
               </button>
               <div className="mt-3 text-muted small">
-                Supported formats: <strong>PDF, JPG, JPEG, PNG</strong> (Max: 25 MB)
+                Supported formats: <strong>PDF, JPG, JPEG, PNG</strong> &bull; Max: 25 MB per file
               </div>
             </div>
 
@@ -313,7 +313,7 @@ const UploadDocument = () => {
             {/* Client-Side Encryption Guarantee */}
             <div className="mt-auto pt-4 border-top mt-4">
               <div className="d-flex align-items-center gap-2 text-teal small fw-semibold">
-                <FaLock /> Zero-Knowledge Client Tokenization Guaranteed
+                <FaLock /> Zero-Knowledge Client Tokenization & Anti-Malware Integrity Check
               </div>
             </div>
           </div>

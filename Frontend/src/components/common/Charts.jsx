@@ -22,7 +22,7 @@ export const StatusDonutChart = ({ active = 6, expiring = 2, expired = 1, size =
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
       <div className="position-relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)', transition: 'transform 0.3s ease' }}>
           {/* Background Ring */}
           <circle
             cx={size / 2}
@@ -124,7 +124,7 @@ export const MonthlyUploadBarChart = ({ data = [
                   height: `${Math.max(barHeight, 8)}px`,
                   backgroundColor: idx === data.length - 1 ? '#0f766e' : '#a7f3d0',
                   borderRadius: '6px 6px 0 0',
-                  transition: 'height 0.4s ease'
+                  transition: 'height 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
                 title={`${item.month}: ${item.uploads} documents`}
               ></div>

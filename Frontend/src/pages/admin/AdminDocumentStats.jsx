@@ -26,7 +26,7 @@ const AdminDocumentStats = () => {
     <div className="d-flex flex-column gap-4">
       {/* Header */}
       <div>
-        <h3 className="fw-bold text-dark mb-1">Document Statistics & Analytics</h3>
+        <h3 className="fw-bold text-dark mb-1">Enterprise Document Statistics & Analytics</h3>
         <p className="text-muted small mb-0">
           Aggregated platform volume, category classification, and document lifecycle metrics.
         </p>
@@ -36,7 +36,7 @@ const AdminDocumentStats = () => {
       <div className="alert alert-warning border-warning d-flex align-items-center gap-3 rounded-4 shadow-sm py-3 px-4 mb-0">
         <FaLock className="text-warning fs-3 flex-shrink-0" />
         <div>
-          <strong className="text-dark d-block">Zero-Knowledge Compliance Notice</strong>
+          <strong className="text-dark d-block">Zero-Knowledge Privacy & Tokenization Compliance</strong>
           <span className="small text-secondary">
             In compliance with TrustVault's client-side security architecture, administrators do not have access
             to raw document files, decryption tokens, or unmasked identification numbers. All analytics shown below

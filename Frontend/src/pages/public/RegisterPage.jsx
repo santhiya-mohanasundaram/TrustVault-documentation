@@ -199,7 +199,7 @@ const RegisterPage = () => {
                       <input
                         type={showPassword ? 'text' : 'password'}
                         className={`form-control border-start-0 border-end-0 ${errors.password ? 'is-invalid' : ''}`}
-                        placeholder="Min 6 characters"
+                        placeholder="Min 6 characters (Letters, Numbers & Symbols)"
                         value={formData.password}
                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                         required
