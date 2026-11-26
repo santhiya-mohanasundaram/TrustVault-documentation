@@ -225,7 +225,7 @@ const UploadDocument = () => {
               <div className="upload-icon-circle">
                 <FaCloudUploadAlt />
               </div>
-              <h5 className="fw-bold text-dark mb-2">Drag and drop your files here</h5>
+              <h5 className="fw-bold text-dark mb-2">Drag & drop your files securely here</h5>
               <div className="d-flex align-items-center justify-content-center gap-3 my-3">
                 <span className="border-bottom flex-grow-1" style={{ maxWidth: 80 }}></span>
                 <span className="text-muted small fw-bold">OR</span>
