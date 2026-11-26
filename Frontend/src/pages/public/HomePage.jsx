@@ -362,6 +362,42 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-5 bg-white border-top">
+        <div className="container py-4">
+          <div className="text-center mb-5">
+            <span className="badge bg-teal-subtle text-teal px-3 py-1 rounded-pill fw-bold small text-uppercase">
+              Frequently Asked Questions
+            </span>
+            <h2 className="display-6 fw-bold text-dark mt-2">Everything You Need to Know</h2>
+          </div>
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="accordion d-flex flex-column gap-3" id="faqAccordion">
+                <div className="p-3 border rounded-3 bg-light">
+                  <h6 className="fw-bold text-dark mb-1">How does TrustVault protect my documents?</h6>
+                  <p className="text-muted small mb-0">
+                    Documents are tokenized client-side using industry standard 256-bit AES algorithms. Encryption keys remain solely under your control.
+                  </p>
+                </div>
+                <div className="p-3 border rounded-3 bg-light">
+                  <h6 className="fw-bold text-dark mb-1">When do expiry reminder alerts trigger?</h6>
+                  <p className="text-muted small mb-0">
+                    Proactive notifications trigger at 60, 30, 15, and 7-day intervals before any official certificate or document reaches its expiry deadline.
+                  </p>
+                </div>
+                <div className="p-3 border rounded-3 bg-light">
+                  <h6 className="fw-bold text-dark mb-1">Can administrators see my personal document contents?</h6>
+                  <p className="text-muted small mb-0">
+                    No. The Admin Portal operates in a strict Privacy Sandbox mode where administrators only monitor system health and aggregated anonymized counters.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact" className="py-5 bg-white">
         <div className="container py-4">
