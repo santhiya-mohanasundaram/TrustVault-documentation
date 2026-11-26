@@ -128,7 +128,7 @@ const ProfilePage = () => {
                 <strong className="text-dark">{documents.length}</strong>
               </div>
               <div className="d-flex justify-content-between">
-                <span>Account Created:</span>
+                <span>Registered On:</span>
                 <strong className="text-dark">{currentUser?.registrationDate || new Date().toISOString().split('T')[0]}</strong>
               </div>
             </div>
