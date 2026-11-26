@@ -180,7 +180,7 @@ const RegisterPage = () => {
                       <input
                         type="tel"
                         className={`form-control border-start-0 ${errors.phone ? 'is-invalid' : ''}`}
-                        placeholder="+91 98765 43210"
+                        placeholder="+91 98765 43210" aria-label="Mobile Number"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
