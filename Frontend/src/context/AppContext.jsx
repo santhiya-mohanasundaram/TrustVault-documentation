@@ -281,7 +281,7 @@ export const AppProvider = ({ children }) => {
         email: true,
         sms: false,
         push: true,
-        expiryThreshold: '30'
+        expiryThreshold: '30', autoReminderEnabled: true
       }
     };
 
