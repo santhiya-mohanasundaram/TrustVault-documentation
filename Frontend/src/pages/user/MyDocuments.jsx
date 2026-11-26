@@ -110,6 +110,10 @@ const MyDocuments = () => {
       {/* Header Bar */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
+          <h3 className="fw-bold text-dark mb-1">My Documents Repository</h3>
+          <p className="text-muted small mb-0 d-flex align-items-center gap-2">
+            <span>Client-side encrypted & organized personal records ({filteredDocs.length} displayed)</span>
+            <span className="badge bg-success-subtle text-success border border-success-subtle small py-1 px-2">AES-256 GCM</span>
           <h3 className="fw-bold text-dark mb-1">My Documents Repository & Vault</h3>
           <p className="text-muted small mb-0">
             Securely stored, organized, and categorized personal records ({filteredDocs.length} displayed)
