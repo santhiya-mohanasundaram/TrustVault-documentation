@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import {
   initialCategories,
   initialDocuments,
@@ -7,24 +7,21 @@ import {
   initialAdminLogs,
   initialNotifications
 } from '../data/initialData';
+import {
+  authApi,
+  documentApi,
+  categoryApi,
+  notificationApi,
+  activityApi,
+  userApi,
+  adminApi,
+  schedulerApi
+} from '../services/api';
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  // 1. Registered Users List
-  const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem('tv_users');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return initialUsers;
-      }
-    }
-    return initialUsers;
-  });
-
-  // 2. Current Session User (Restored from localStorage on refresh, or null if logged out)
+  // 1. Current Session User (Restored from localStorage on refresh, or null if logged out)
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('tv_user');
     if (saved) {
@@ -37,113 +34,113 @@ export const AppProvider = ({ children }) => {
     return null;
   });
 
-  // 3. Current Role
+  // 2. Current Role
   const [role, setRole] = useState(() => {
     return localStorage.getItem('tv_role') || 'User';
   });
 
-  // 4. All Documents across all users (with userId association)
-  const [allDocuments, setAllDocuments] = useState(() => {
-    const saved = localStorage.getItem('tv_documents');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.map((d) => ({ ...d, userId: d.userId || 'USR-101' }));
-      } catch (e) {
-        return initialDocuments;
-      }
-    }
-    return initialDocuments;
-  });
+  // 3. Registered Users List (For Admin)
+  const [users, setUsers] = useState(initialUsers);
+
+  // 4. All Documents
+  const [allDocuments, setAllDocuments] = useState(initialDocuments);
 
   // 5. System Categories
-  const [categories, setCategories] = useState(() => {
-    const saved = localStorage.getItem('tv_categories');
-    return saved ? JSON.parse(saved) : initialCategories;
-  });
+  const [categories, setCategories] = useState(initialCategories);
 
-  // 6. All User Activities (with userId association)
-  const [allActivities, setAllActivities] = useState(() => {
-    const saved = localStorage.getItem('tv_activities');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.map((a) => ({ ...a, userId: a.userId || 'USR-101' }));
-      } catch (e) {
-        return initialActivities;
-      }
-    }
-    return initialActivities;
-  });
+  // 6. All User Activities
+  const [allActivities, setAllActivities] = useState(initialActivities);
 
   // 7. System Admin Logs
-  const [adminLogs, setAdminLogs] = useState(() => {
-    const saved = localStorage.getItem('tv_admin_logs');
-    return saved ? JSON.parse(saved) : initialAdminLogs;
-  });
+  const [adminLogs, setAdminLogs] = useState(initialAdminLogs);
 
-  // 8. All Notifications (with userId association)
-  const [allNotifications, setAllNotifications] = useState(() => {
-    const saved = localStorage.getItem('tv_notifications');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.map((n) => ({ ...n, userId: n.userId || 'USR-101' }));
-      } catch (e) {
-        return initialNotifications;
-      }
-    }
-    return initialNotifications;
-  });
+  // 8. All Notifications
+  const [allNotifications, setAllNotifications] = useState(initialNotifications);
 
   const [toast, setToast] = useState(null);
+  const [isBackendConnected, setIsBackendConnected] = useState(false);
 
-  // Sync state changes with localStorage
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('tv_user', JSON.stringify(currentUser));
-    } else {
-      localStorage.removeItem('tv_user');
-    }
-  }, [currentUser]);
-
-  useEffect(() => {
-    localStorage.setItem('tv_role', role);
-  }, [role]);
-
-  useEffect(() => {
-    localStorage.setItem('tv_users', JSON.stringify(users));
-  }, [users]);
-
-  useEffect(() => {
-    localStorage.setItem('tv_documents', JSON.stringify(allDocuments));
-  }, [allDocuments]);
-
-  useEffect(() => {
-    localStorage.setItem('tv_categories', JSON.stringify(categories));
-  }, [categories]);
-
-  useEffect(() => {
-    localStorage.setItem('tv_activities', JSON.stringify(allActivities));
-  }, [allActivities]);
-
-  useEffect(() => {
-    localStorage.setItem('tv_admin_logs', JSON.stringify(adminLogs));
-  }, [adminLogs]);
-
-  useEffect(() => {
-    localStorage.setItem('tv_notifications', JSON.stringify(allNotifications));
-  }, [allNotifications]);
-
-  // Show Toast
-  const showToast = (message, type = 'success') => {
+  // Show Toast Helper
+  const showToast = useCallback((message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => {
       setToast(null);
     }, 3500);
-  };
+  }, []);
 
-  // User-scoped Documents: A user sees ONLY their own documents! Admin sees all documents.
+  // Fetch all live data from backend for the authenticated user
+  const refreshBackendData = useCallback(async (userRole = role) => {
+    try {
+      // 1. Load Categories
+      const catRes = await categoryApi.getAll();
+      if (catRes && catRes.data) {
+        setCategories(catRes.data);
+      }
+
+      // 2. Load Documents
+      const docRes = await documentApi.getAll();
+      if (docRes && docRes.data) {
+        setAllDocuments(docRes.data);
+      }
+
+      // 3. Load Notifications
+      const notifRes = await notificationApi.getAll();
+      if (notifRes && notifRes.data) {
+        setAllNotifications(notifRes.data);
+      }
+
+      // 4. Load Activities
+      const actRes = await activityApi.getUserActivities();
+      if (actRes && actRes.data) {
+        setAllActivities(actRes.data);
+      }
+
+      // 5. Admin data if Admin
+      if (userRole === 'Admin') {
+        const statsRes = await adminApi.getStats();
+        if (statsRes && statsRes.data) {
+          if (statsRes.data.users) setUsers(statsRes.data.users);
+          if (statsRes.data.systemAuditLogs) setAdminLogs(statsRes.data.systemAuditLogs);
+        }
+      }
+
+      setIsBackendConnected(true);
+    } catch (err) {
+      console.warn('Backend data sync notice:', err.message);
+    }
+  }, [role]);
+
+  // Initial Load & Token Validation
+  useEffect(() => {
+    const token = localStorage.getItem('tv_token');
+    if (token) {
+      authApi.getMe()
+        .then((res) => {
+          if (res && res.data) {
+            setCurrentUser(res.data);
+            setRole(res.data.role);
+            localStorage.setItem('tv_user', JSON.stringify(res.data));
+            localStorage.setItem('tv_role', res.data.role);
+            refreshBackendData(res.data.role);
+          }
+        })
+        .catch(() => {
+          // Token expired or invalid
+          localStorage.removeItem('tv_token');
+          localStorage.removeItem('tv_user');
+          setCurrentUser(null);
+        });
+    } else {
+      // Load public categories
+      categoryApi.getAll()
+        .then((res) => {
+          if (res && res.data) setCategories(res.data);
+        })
+        .catch(() => {});
+    }
+  }, [refreshBackendData]);
+
+  // User-scoped Documents: Filter by current user
   const documents = useMemo(() => {
     if (role === 'Admin') {
       return allDocuments;
@@ -152,7 +149,7 @@ export const AppProvider = ({ children }) => {
     return allDocuments.filter((d) => d.userId === currentUser.id);
   }, [allDocuments, role, currentUser]);
 
-  // User-scoped Notifications: A user sees ONLY their own notifications!
+  // User-scoped Notifications
   const notifications = useMemo(() => {
     if (role === 'Admin') {
       return allNotifications;
@@ -161,7 +158,7 @@ export const AppProvider = ({ children }) => {
     return allNotifications.filter((n) => n.userId === currentUser.id);
   }, [allNotifications, role, currentUser]);
 
-  // User-scoped Activities: A user sees ONLY their own history!
+  // User-scoped Activities
   const activities = useMemo(() => {
     if (role === 'Admin') {
       return allActivities;
@@ -176,80 +173,45 @@ export const AppProvider = ({ children }) => {
   // AUTHENTICATION: DYNAMIC LOGIN & REGISTRATION
   // ==========================================
 
-  const login = (email, password, selectedRole) => {
+  const login = async (email, password, selectedRole) => {
     const cleanEmail = (email || '').trim().toLowerCase();
-    setRole(selectedRole);
 
-    if (selectedRole === 'Admin') {
-      // Check Admin credentials
-      if (
-        (cleanEmail === 'admin@trustvault.io' && (password === 'admin1234' || password === 'admin' || !password)) ||
-        cleanEmail === 'admin'
-      ) {
-        const adminUser = {
-          id: 'ADM-001',
-          name: 'Admin System',
-          email: 'admin@trustvault.io',
-          phone: '+91 90000 00001',
-          role: 'Admin',
-          registrationDate: '2025-12-01',
-          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80'
-        };
-        setCurrentUser(adminUser);
-        localStorage.setItem('tv_user', JSON.stringify(adminUser));
-        localStorage.setItem('tv_role', 'Admin');
-        logAdminEvent('User Login', adminUser.email, 'Admin session authenticated', 'Success');
-        showToast('Welcome to TrustVault Admin Console!', 'success');
-        return { success: true, user: adminUser };
-      } else {
-        showToast('Invalid Admin credentials. Demo Admin: admin@trustvault.io / admin1234', 'danger');
-        return { success: false, error: 'Invalid admin credentials' };
+    try {
+      const res = await authApi.login(cleanEmail, password, selectedRole);
+      if (res && res.success && res.data) {
+        const { token, user } = res.data;
+        localStorage.setItem('tv_token', token);
+        localStorage.setItem('tv_user', JSON.stringify(user));
+        localStorage.setItem('tv_role', user.role);
+
+        setCurrentUser(user);
+        setRole(user.role);
+
+        await refreshBackendData(user.role);
+
+        showToast(`Welcome back, ${user.name}!`, 'success');
+        return { success: true, user };
       }
-    } else {
-      // User Role: Verify dynamically against registered users in `users`
-      const foundUser = users.find(
-        (u) => u.email && u.email.toLowerCase() === cleanEmail
-      );
-
-      if (!foundUser) {
-        showToast(`No registered account found for "${email}". Please register first.`, 'danger');
-        return { success: false, error: 'User not found' };
-      }
-
-      // Check password if set
-      if (foundUser.password && foundUser.password !== password) {
-        showToast('Incorrect password. Please verify and try again.', 'danger');
-        return { success: false, error: 'Incorrect password' };
-      }
-
-      // Check account status
-      if (foundUser.status === 'Suspended') {
-        showToast('Your account is currently suspended. Please contact administrator.', 'warning');
-        return { success: false, error: 'Account suspended' };
-      }
-
-      const loggedInUser = {
-        ...foundUser,
-        lastLogin: 'Just now'
-      };
-
-      // Update lastLogin in users array
-      setUsers((prev) =>
-        prev.map((u) => (u.id === foundUser.id ? { ...u, lastLogin: 'Just now' } : u))
-      );
-
-      setCurrentUser(loggedInUser);
-      localStorage.setItem('tv_user', JSON.stringify(loggedInUser));
-      localStorage.setItem('tv_role', 'User');
-
-      logActivity('User Login', 'User Dashboard Accessed', 'System', 'Success', loggedInUser.id, loggedInUser.name);
-      logAdminEvent('User Login', loggedInUser.email, `User ${loggedInUser.name} signed in`, 'Success');
-
-      showToast(`Welcome back, ${loggedInUser.name}!`, 'success');
-      return { success: true, user: loggedInUser };
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Login failed. Please verify credentials.';
+      showToast(msg, 'danger');
+      return { success: false, error: msg };
     }
   };
 
+  const register = async (formData) => {
+    try {
+      const res = await authApi.register({
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        mobileNumber: formData.phone ? formData.phone.trim() : null,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword
+      });
+
+      if (res && res.success) {
+        showToast(`Account created for ${res.data.name}! Please log in.`, 'success');
+        return { success: true, user: res.data };
   const register = (formData) => {
     const cleanEmail = formData.email.trim().toLowerCase();
     const cleanName = formData.fullName.trim();
@@ -283,35 +245,20 @@ export const AppProvider = ({ children }) => {
         push: true,
         expiryThreshold: '30', autoReminderEnabled: true
       }
-    };
-
-    // Update registered users list
-    setUsers((prev) => [newUser, ...prev]);
-
-    // Add a welcome notification specifically for this newly registered user
-    const welcomeNotif = {
-      id: `notif-${Date.now()}`,
-      userId: newUserId,
-      title: `Welcome to TrustVault, ${cleanName}!`,
-      description: 'Your personal document vault is ready. Start by uploading and organizing your vital certificates.',
-      date: 'Just now',
-      isRead: false,
-      type: 'info',
-      docId: null
-    };
-    setAllNotifications((prev) => [welcomeNotif, ...prev]);
-
-    // Log registration in activity & admin logs
-    logAdminEvent('User Registration', cleanEmail, `New user ${cleanName} registered`, 'Success');
-
-    showToast(`Account created for ${cleanName}! Please log in.`, 'success');
-    return { success: true, user: newUser };
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Registration failed.';
+      showToast(msg, 'warning');
+      return { success: false, error: msg };
+    }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await authApi.logout();
     setCurrentUser(null);
-    localStorage.removeItem('tv_user');
-    localStorage.removeItem('tv_role');
+    setRole('User');
+    setAllDocuments([]);
+    setAllNotifications([]);
+    setAllActivities([]);
     showToast('You have been logged out safely.', 'info');
   };
 
@@ -319,6 +266,9 @@ export const AppProvider = ({ children }) => {
   // DOCUMENT OPERATIONS (USER-SCOPED)
   // ==========================================
 
+  const addDocument = async (newDoc) => {
+    try {
+      const formData = new FormData();
   const addDocument = (newDoc) => {
     // Check for potential duplicate document names
     const isDuplicate = allDocuments.some(d => d.userId === (currentUser?.id || "USR-101") && d.name.toLowerCase() === newDoc.name.toLowerCase());
@@ -341,111 +291,96 @@ export const AppProvider = ({ children }) => {
 
     setAllDocuments((prev) => [docWithId, ...prev]);
 
-    // Update user's document count in users list
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === ownerId ? { ...u, documentsCount: (u.documentsCount || 0) + 1 } : u
-      )
-    );
+      if (newDoc.rawFile) {
+        formData.append('file', newDoc.rawFile);
+      } else {
+        // Fallback file blob for programmatic addition
+        const blob = new Blob([`TrustVault Document: ${newDoc.name}`], { type: 'application/pdf' });
+        formData.append('file', blob, `${newDoc.name.replace(/\s+/g, '_')}.pdf`);
+      }
 
-    // Also update currentUser's own document count if matching
-    if (currentUser && currentUser.id === ownerId) {
-      setCurrentUser((prev) => ({
-        ...prev,
-        documentsCount: (prev.documentsCount || 0) + 1
-      }));
+      formData.append('documentName', newDoc.name);
+      formData.append('category', newDoc.category);
+      if (newDoc.documentNumber) formData.append('documentNumber', newDoc.documentNumber);
+      if (newDoc.issueDate) formData.append('issueDate', newDoc.issueDate);
+      if (newDoc.expiryDate) formData.append('expiryDate', newDoc.expiryDate);
+      if (newDoc.description) formData.append('description', newDoc.description);
+
+      const res = await documentApi.upload(formData);
+      if (res && res.success && res.data) {
+        const savedDoc = res.data;
+        setAllDocuments((prev) => [savedDoc, ...prev]);
+
+        // Refresh notifications & activities
+        try {
+          const notifs = await notificationApi.getAll();
+          if (notifs && notifs.data) setAllNotifications(notifs.data);
+          const acts = await activityApi.getUserActivities();
+          if (acts && acts.data) setAllActivities(acts.data);
+        } catch (e) {}
+
+        showToast(`"${savedDoc.name}" uploaded and encrypted successfully!`, 'success');
+        return savedDoc;
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Failed to upload document.';
+      showToast(msg, 'danger');
+      throw err;
     }
-
-    // Log Activity for this user
-    logActivity('Document Uploaded', docWithId.name, docWithId.category, 'Success', ownerId, ownerName);
-    logAdminEvent('Document Upload', currentUser?.email || 'user', `Uploaded ${docWithId.name} by ${ownerName}`, 'Success');
-
-    // Add Notification for this user
-    addNotification({
-      userId: ownerId,
-      title: 'New Document Uploaded',
-      description: `${docWithId.name} has been added securely to your vault under ${docWithId.category}.`,
-      type: 'success',
-      docId: docWithId.id
-    });
-
-    showToast(`"${docWithId.name}" saved successfully!`, 'success');
-    return docWithId;
   };
 
-  const updateDocument = (id, updatedFields) => {
+  const updateDocument = async (id, updatedFields) => {
+    try {
+      if (typeof id === 'number') {
+        const res = await documentApi.update(id, updatedFields);
+        if (res && res.data) {
+          setAllDocuments((prev) =>
+            prev.map((doc) => (doc.id === id ? res.data : doc))
+          );
+          showToast(`"${res.data.name}" updated successfully!`, 'success');
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Update document API error:', err);
+    }
+
+    // Local fallback update
     setAllDocuments((prev) =>
       prev.map((doc) => {
         if (doc.id === id) {
-          return {
-            ...doc,
-            ...updatedFields,
-            lastModified: new Date().toLocaleDateString('en-GB', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            })
-          };
+          return { ...doc, ...updatedFields };
         }
         return doc;
       })
     );
-
-    const targetDoc = allDocuments.find((d) => d.id === id);
-    const docName = targetDoc ? targetDoc.name : 'Document';
-    logActivity('Document Updated', docName, targetDoc?.category || 'General', 'Success');
-    showToast(`"${docName}" updated successfully!`, 'success');
+    showToast('Document details updated successfully!', 'success');
   };
 
-  const deleteDocument = (id) => {
-    const targetDoc = allDocuments.find((d) => d.id === id);
-    if (!targetDoc) return;
-
-    setAllDocuments((prev) => prev.filter((doc) => doc.id !== id));
-
-    // Decrement user document count
-    if (targetDoc.userId) {
-      setUsers((prev) =>
-        prev.map((u) =>
-          u.id === targetDoc.userId
-            ? { ...u, documentsCount: Math.max(0, (u.documentsCount || 0) - 1) }
-            : u
-        )
-      );
-
-      if (currentUser && currentUser.id === targetDoc.userId) {
-        setCurrentUser((prev) => ({
-          ...prev,
-          documentsCount: Math.max(0, (prev.documentsCount || 0) - 1)
-        }));
+  const deleteDocument = async (id) => {
+    try {
+      if (typeof id === 'number') {
+        await documentApi.delete(id);
       }
+    } catch (err) {
+      console.warn('Delete document API error:', err);
     }
 
-    logActivity('Document Deleted', targetDoc.name, targetDoc.category, 'Info');
-    logAdminEvent('Document Deleted', currentUser?.email || 'user', `Removed ${targetDoc.name}`, 'Warning');
-    showToast(`"${targetDoc.name}" has been removed from vault.`, 'info');
+    setAllDocuments((prev) => prev.filter((doc) => doc.id !== id));
+    showToast('Document has been removed from vault.', 'info');
   };
 
   // ==========================================
   // ACTIVITIES & AUDIT LOGGING
   // ==========================================
 
-  const logActivity = (
-    type,
-    documentName,
-    category = 'General',
-    status = 'Success',
-    userId = null,
-    userName = null
-  ) => {
+  const logActivity = (type, documentName, category = 'General', status = 'Success') => {
     const newAct = {
       id: `act-${Date.now()}`,
-      userId: userId || currentUser?.id || 'USR-101',
+      userId: currentUser?.id,
       type,
       documentName,
-      user: userName || currentUser?.name || 'User',
+      user: currentUser?.name || 'User',
       timestamp: new Date().toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
@@ -465,7 +400,7 @@ export const AppProvider = ({ children }) => {
       event,
       user,
       action,
-      ip: '192.168.1.100',
+      ip: '127.0.0.1',
       timestamp: new Date().toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
@@ -482,26 +417,36 @@ export const AppProvider = ({ children }) => {
   // NOTIFICATIONS (USER-SCOPED)
   // ==========================================
 
-  const markNotificationAsRead = (id) => {
+  const markNotificationAsRead = async (id) => {
+    try {
+      if (typeof id === 'number') {
+        await notificationApi.markRead(id);
+      }
+    } catch (e) {}
+
     setAllNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
   };
 
-  const markAllNotificationsAsRead = () => {
-    if (!currentUser) return;
+  const markAllNotificationsAsRead = async () => {
+    try {
+      await notificationApi.markAllRead();
+    } catch (e) {}
+
     setAllNotifications((prev) =>
-      prev.map((n) =>
-        n.userId === currentUser.id ? { ...n, isRead: true } : n
-      )
+      prev.map((n) => (currentUser && n.userId === currentUser.id ? { ...n, isRead: true } : n))
     );
     showToast('All notifications marked as read', 'success');
   };
 
-  const clearNotifications = () => {
-    if (!currentUser) return;
+  const clearNotifications = async () => {
+    try {
+      await notificationApi.clearAll();
+    } catch (e) {}
+
     setAllNotifications((prev) =>
-      prev.filter((n) => n.userId !== currentUser.id)
+      prev.filter((n) => !currentUser || n.userId !== currentUser.id)
     );
     showToast('All notifications cleared', 'info');
   };
@@ -509,7 +454,7 @@ export const AppProvider = ({ children }) => {
   const addNotification = (notif) => {
     const newNotif = {
       id: `notif-${Date.now()}`,
-      userId: notif.userId || currentUser?.id || 'USR-101',
+      userId: currentUser?.id,
       date: 'Just now',
       isRead: false,
       ...notif
@@ -521,55 +466,64 @@ export const AppProvider = ({ children }) => {
   // CATEGORY MANAGEMENT (ADMIN)
   // ==========================================
 
-  const addCategory = (categoryData) => {
-    const newCat = {
-      id: categoryData.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      count: 0,
-      color: '#0f766e',
-      bgColor: '#ccfbf1',
-      icon: 'FaFolder',
-      ...categoryData
-    };
-    setCategories((prev) => [...prev, newCat]);
-    logAdminEvent('Category Created', currentUser?.email || 'admin', `Created category "${newCat.name}"`, 'Success');
-    showToast(`Category "${newCat.name}" created!`, 'success');
+  const addCategory = async (categoryData) => {
+    try {
+      const res = await categoryApi.create(categoryData);
+      if (res && res.data) {
+        setCategories((prev) => [...prev, res.data]);
+        showToast(`Category "${res.data.name}" created!`, 'success');
+        return;
+      }
+    } catch (err) {
+      console.warn('Create category API warning:', err);
+    }
   };
 
-  const updateCategory = (id, updatedData) => {
-    setCategories((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, ...updatedData } : c))
-    );
-    logAdminEvent('Category Updated', currentUser?.email || 'admin', `Updated category "${id}"`, 'Success');
-    showToast('Category updated successfully!', 'success');
+  const updateCategory = async (id, updatedData) => {
+    try {
+      if (typeof id === 'number') {
+        const res = await categoryApi.update(id, updatedData);
+        if (res && res.data) {
+          setCategories((prev) =>
+            prev.map((c) => (c.id === id ? res.data : c))
+          );
+          showToast('Category updated successfully!', 'success');
+          return;
+        }
+      }
+    } catch (e) {}
   };
 
-  const deleteCategory = (id) => {
-    const cat = categories.find((c) => c.id === id);
-    if (!cat) return;
-    setCategories((prev) => prev.filter((c) => c.id !== id));
-    logAdminEvent('Category Deleted', currentUser?.email || 'admin', `Removed category "${cat.name}"`, 'Warning');
-    showToast(`Category "${cat.name}" deleted.`, 'info');
+  const deleteCategory = async (id) => {
+    try {
+      if (typeof id === 'number') {
+        await categoryApi.delete(id);
+      }
+      setCategories((prev) => prev.filter((c) => c.id !== id));
+      showToast('Category deleted successfully.', 'info');
+    } catch (e) {}
   };
 
   // ==========================================
   // USER MANAGEMENT (ADMIN)
   // ==========================================
 
-  const updateUserStatus = (userId, newStatus) => {
+  const updateUserStatus = async (userId, newStatus) => {
+    try {
+      if (typeof userId === 'number') {
+        const res = await adminApi.updateUserStatus(userId, newStatus);
+        if (res && res.data) {
+          setUsers((prev) =>
+            prev.map((u) => (u.id === userId ? res.data : u))
+          );
+          showToast(`User status updated to ${newStatus}`, 'success');
+          return;
+        }
+      }
+    } catch (e) {}
+
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u))
-    );
-
-    // If current logged in user status changed, update session too
-    if (currentUser && currentUser.id === userId) {
-      setCurrentUser((prev) => ({ ...prev, status: newStatus }));
-    }
-
-    logAdminEvent(
-      'User Status Changed',
-      currentUser?.email || 'admin',
-      `User ${userId} status changed to ${newStatus}`,
-      newStatus === 'Active' ? 'Success' : 'Warning'
     );
     showToast(`User status updated to ${newStatus}`, 'success');
   };
@@ -578,41 +532,38 @@ export const AppProvider = ({ children }) => {
   // PROFILE UPDATE (USER)
   // ==========================================
 
-  const updateProfile = (profileData) => {
+  const updateProfile = async (profileData) => {
     if (!currentUser) return;
 
-    const updatedUser = {
-      ...currentUser,
-      ...profileData
-    };
+    try {
+      const res = await userApi.updateProfile(profileData);
+      if (res && res.data) {
+        setCurrentUser(res.data);
+        localStorage.setItem('tv_user', JSON.stringify(res.data));
+        showToast('Profile information saved successfully!', 'success');
+        return;
+      }
+    } catch (err) {
+      console.warn('Update profile API error:', err);
+    }
 
+    const updatedUser = { ...currentUser, ...profileData };
     setCurrentUser(updatedUser);
     localStorage.setItem('tv_user', JSON.stringify(updatedUser));
-
-    // Synchronize into master users directory
-    setUsers((prev) =>
-      prev.map((u) => (u.id === currentUser.id ? { ...u, ...profileData } : u))
-    );
-
-    logActivity('Profile Updated', 'User Profile Information', 'Account', 'Success');
     showToast('Profile information saved successfully!', 'success');
   };
 
-  // ==========================================
-  // RESET DEMO DATA
-  // ==========================================
-
-  const resetDemoData = () => {
-    localStorage.clear();
-    setAllDocuments(initialDocuments);
-    setCategories(initialCategories);
-    setUsers(initialUsers);
-    setAllActivities(initialActivities);
-    setAdminLogs(initialAdminLogs);
-    setAllNotifications(initialNotifications);
-    setCurrentUser(null);
-    setRole('User');
-    showToast('Reset to original sample demo data! Please log in.', 'info');
+  // Trigger manual expiry audit
+  const runExpiryAudit = async () => {
+    try {
+      const res = await schedulerApi.triggerExpiryAudit();
+      if (res && res.success) {
+        await refreshBackendData();
+        showToast(`Expiry audit completed. ${res.data?.processedReminders || 0} reminders processed.`, 'info');
+      }
+    } catch (e) {
+      showToast('Could not trigger expiry audit.', 'warning');
+    }
   };
 
   return (
@@ -649,7 +600,9 @@ export const AppProvider = ({ children }) => {
         deleteCategory,
         updateUserStatus,
         updateProfile,
-        resetDemoData
+        runExpiryAudit,
+        refreshBackendData,
+        isBackendConnected
       }}
     >
       {children}

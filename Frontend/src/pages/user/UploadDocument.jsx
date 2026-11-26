@@ -164,6 +164,7 @@ const UploadDocument = () => {
       status: status,
       fileType: selectedFile.type,
       fileSize: selectedFile.size,
+      rawFile: selectedFile.rawFile,
       description: formData.description || 'Uploaded via TrustVault Web Portal.'
     };
 
