@@ -58,7 +58,7 @@ const NotificationsPage = () => {
             disabled={unreadCount === 0}
             className="btn btn-outline-teal btn-sm d-flex align-items-center gap-2"
           >
-            <FaCheckDouble /> Mark All as Read
+            <FaCheckDouble /> Mark All as Read (Verified)
           </button>
           <button
             onClick={clearNotifications}
