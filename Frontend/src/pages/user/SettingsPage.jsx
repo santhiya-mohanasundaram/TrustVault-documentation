@@ -203,7 +203,7 @@ const SettingsPage = () => {
                     onChange={(e) => setNotifPrefs({ ...notifPrefs, weeklySummary: e.target.checked })}
                   />
                   <label className="form-check-label small fw-semibold text-dark" htmlFor="weeklySummSwitch">
-                    Weekly Vault Security Summary
+                    Weekly Vault Security & Expiry Summary
                   </label>
                   <div className="text-muted" style={{ fontSize: '0.72rem' }}>
                     Receive a weekly status review of your secured files.
