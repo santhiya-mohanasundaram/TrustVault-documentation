@@ -178,7 +178,7 @@ const AdminCategoryManagement = () => {
       {/* Category Table */}
       <div className="tv-card overflow-hidden mt-2">
         <div className="p-3 border-bottom bg-light">
-          <h6 className="fw-bold text-dark mb-0">Master Category Registry</h6>
+          <h6 className="fw-bold text-dark mb-0">Master Verified Category Registry</h6>
         </div>
         <div className="table-responsive">
           <table className="tv-table">
