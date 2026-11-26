@@ -81,7 +81,7 @@ const DocumentHistory = () => {
     <div className="d-flex flex-column gap-4">
       {/* Header */}
       <div>
-        <h3 className="fw-bold text-dark mb-1">Document Activity History</h3>
+        <h3 className="fw-bold text-dark mb-1">Document Activity & Audit History</h3>
         <p className="text-muted small mb-0">
           Cryptographically timestamped user audit log of every document interaction.
         </p>
