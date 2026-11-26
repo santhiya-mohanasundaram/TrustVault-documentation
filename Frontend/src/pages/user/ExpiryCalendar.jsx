@@ -124,7 +124,7 @@ const ExpiryCalendar = () => {
                   {monthNames[month]} {year}
                 </h4>
                 <button onClick={setToday} className="btn btn-sm btn-outline-teal ms-2">
-                  Today (Nov 2026)
+                  Jump to Current Month
                 </button>
               </div>
               <div className="btn-group">
