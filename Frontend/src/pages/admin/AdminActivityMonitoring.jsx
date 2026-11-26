@@ -54,7 +54,7 @@ const AdminActivityMonitoring = () => {
     <div className="d-flex flex-column gap-4">
       {/* Header */}
       <div>
-        <h3 className="fw-bold text-dark mb-1">System Security & Activity Monitoring</h3>
+        <h3 className="fw-bold text-dark mb-1">System Security Audit & Real-Time Activity Monitoring</h3>
         <p className="text-muted small mb-0">
           Immutable system-level audit logs for authentication events, uploads, and governance operations.
         </p>
