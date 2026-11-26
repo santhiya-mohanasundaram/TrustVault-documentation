@@ -47,7 +47,7 @@ const NotificationsPage = () => {
       {/* Header */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">Notification Center</h3>
+          <h3 className="fw-bold text-dark mb-1">Notification & Alert Center</h3>
           <p className="text-muted small mb-0">
             Real-time proactive alerts for expiring certificates, system events, and upload confirmations.
           </p>
@@ -58,7 +58,7 @@ const NotificationsPage = () => {
             disabled={unreadCount === 0}
             className="btn btn-outline-teal btn-sm d-flex align-items-center gap-2"
           >
-            <FaCheckDouble /> Mark All as Read
+            <FaCheckDouble /> Mark All as Read (Verified)
           </button>
           <button
             onClick={clearNotifications}
