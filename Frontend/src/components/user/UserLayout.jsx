@@ -83,7 +83,7 @@ const UserLayout = () => {
               >
                 <FaBell className="text-secondary" />
                 {unreadNotifs.length > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: '0.65rem' }}>
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger animate-pulse" style={{ fontSize: '0.65rem' }}>
                     {unreadNotifs.length}
                   </span>
                 )}
