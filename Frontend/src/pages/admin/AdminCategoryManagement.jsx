@@ -110,7 +110,7 @@ const AdminCategoryManagement = () => {
       {/* Header */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">Document Category Master</h3>
+          <h3 className="fw-bold text-dark mb-1">System Document Category Master</h3>
           <p className="text-muted small mb-0">
             Define, customize, and govern legal document classification rules and folder structures.
           </p>
@@ -178,7 +178,7 @@ const AdminCategoryManagement = () => {
       {/* Category Table */}
       <div className="tv-card overflow-hidden mt-2">
         <div className="p-3 border-bottom bg-light">
-          <h6 className="fw-bold text-dark mb-0">Master Category Registry</h6>
+          <h6 className="fw-bold text-dark mb-0">Master Verified Category Registry</h6>
         </div>
         <div className="table-responsive">
           <table className="tv-table">
