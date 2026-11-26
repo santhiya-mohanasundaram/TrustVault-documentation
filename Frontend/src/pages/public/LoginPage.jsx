@@ -186,7 +186,7 @@ const LoginPage = () => {
                       <input
                         type="email"
                         className="form-control border-start-0"
-                        placeholder="e.g. name@example.com"
+                        placeholder="e.g. name@example.com" autoCapitalize="none"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -204,7 +204,7 @@ const LoginPage = () => {
                       <input
                         type={showPassword ? 'text' : 'password'}
                         className="form-control border-start-0 border-end-0"
-                        placeholder="Enter your password"
+                        placeholder="Enter your password" aria-label="Account Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
