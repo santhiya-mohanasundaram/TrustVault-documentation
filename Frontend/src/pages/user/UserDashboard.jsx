@@ -82,6 +82,18 @@ const UserDashboard = () => {
         </div>
       </div>
 
+      {/* Storage Usage Bar */}
+      <div className="tv-card p-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div className="d-flex align-items-center gap-2">
+          <span className="badge bg-teal-subtle text-teal fw-bold">Cloud Vault Storage</span>
+          <span className="small text-muted">{documents.length * 1.8} MB of 500 MB used</span>
+        </div>
+        <div className="progress flex-grow-1 mx-3" style={{ height: 8, minWidth: 150 }}>
+          <div className="progress-bar bg-teal" style={{ width: `${Math.min(documents.length * 3 + 4, 100)}%` }}></div>
+        </div>
+        <span className="small text-secondary fw-bold">99% Free</span>
+      </div>
+
       {/* Dashboard Overview Cards */}
       <div className="row g-3">
         <div className="col-xl-3 col-sm-6">
@@ -168,7 +180,7 @@ const UserDashboard = () => {
 
       {/* Action Sections: Recently Uploaded & Upcoming Expiry */}
       <div className="row g-4">
-        {/* Recently Uploaded Documents */}
+        {/* Recently Uploaded Documents (Live) */}
         <div className="col-lg-8">
           <div className="tv-card p-4 h-100">
             <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
