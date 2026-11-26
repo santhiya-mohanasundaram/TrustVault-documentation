@@ -180,7 +180,7 @@ const UserDashboard = () => {
 
       {/* Action Sections: Recently Uploaded & Upcoming Expiry */}
       <div className="row g-4">
-        {/* Recently Uploaded Documents */}
+        {/* Recently Uploaded Documents (Live) */}
         <div className="col-lg-8">
           <div className="tv-card p-4 h-100">
             <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
