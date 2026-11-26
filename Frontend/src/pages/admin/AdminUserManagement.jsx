@@ -54,7 +54,7 @@ const AdminUserManagement = () => {
       {/* Header */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">User Account Management</h3>
+          <h3 className="fw-bold text-dark mb-1">User Account & Access Governance</h3>
           <p className="text-muted small mb-0">
             Control registered tenant accounts, monitor access privileges, and manage statuses.
           </p>
@@ -90,7 +90,7 @@ const AdminUserManagement = () => {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="All">All Account Statuses</option>
+              <option value="All">All Tenant Statuses</option>
               <option value="Active">Active Accounts</option>
               <option value="Suspended">Suspended Accounts</option>
             </select>
