@@ -320,6 +320,8 @@ export const AppProvider = ({ children }) => {
   // ==========================================
 
   const addDocument = (newDoc) => {
+    // Check for potential duplicate document names
+    const isDuplicate = allDocuments.some(d => d.userId === (currentUser?.id || "USR-101") && d.name.toLowerCase() === newDoc.name.toLowerCase());
     const ownerId = currentUser?.id || 'USR-101';
     const ownerName = currentUser?.name || 'User';
 

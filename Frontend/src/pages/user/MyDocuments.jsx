@@ -110,7 +110,7 @@ const MyDocuments = () => {
       {/* Header Bar */}
       <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
         <div>
-          <h3 className="fw-bold text-dark mb-1">My Documents Repository</h3>
+          <h3 className="fw-bold text-dark mb-1">My Documents Repository & Vault</h3>
           <p className="text-muted small mb-0">
             Securely stored, organized, and categorized personal records ({filteredDocs.length} displayed)
           </p>
